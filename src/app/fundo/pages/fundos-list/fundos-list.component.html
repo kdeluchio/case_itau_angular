@@ -1,0 +1,160 @@
+<form [formGroup]="updateFundo" >
+    <div class="row content">
+        <div class="col-sm-1 form-group">
+            <button type="submit" class="btn btn-primary" (click)="newMode()">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Adicionar
+            </button>
+        </div>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="message != '' && typeAlert == 'danger' " >
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeMsg()"> 
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="message != '' && typeAlert == 'success' " >
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeMsg()"> 
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="form-group" *ngIf="createMode">
+        <div class="row content">
+            <div class="col-sm-3 form-group">
+                <label >Código</label>
+                <input type="text" class="form-control" formControlName="codigo">                        
+            </div>
+            <div class="col-sm-3 form-group"> 
+                <label >Nome</label>
+                <input type="text" class="form-control" formControlName="nome" >                       
+            </div>
+            <div class="col-sm-3 form-group">  
+                <label >CNPJ</label>
+                <input type="text" class="form-control" formControlName="cnpj" >                        
+            </div>             
+            <div class="col-sm-3 form-group">
+                <label>Tipo</label>
+                <select class="form-control" formControlName="codigoTipo">              
+                    <option *ngFor="let tipo of tiposFundo" value="{{tipo.codigo}}">{{tipo.codigo}} | {{tipo.nome}}</option> 
+                 </select>             
+            </div>      
+                  
+        </div>
+        <div class="row content">
+            <div class="col-sm-1 form-group">
+                <button type="submit" [disabled]="loading" class="btn btn-secondary" (click)="cancel()">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Cancelar
+                </button>
+            </div>            
+            <div class="col-sm-1 form-group">
+                <button type="submit" [disabled]="loading" class="btn btn-success" (click)="new()">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div> 
+
+    <div class="form-group" *ngIf="updateMode">
+        <div class="row content">
+            <div class="col-sm-3 form-group">
+                <label >Código</label>
+                <input type="text" class="form-control" formControlName="codigo" readonly>                        
+            </div>
+            <div class="col-sm-3 form-group"> 
+                <label >Nome</label>
+                <input type="text" class="form-control" formControlName="nome" >                       
+            </div>
+            <div class="col-sm-3 form-group">  
+                <label >CNPJ</label>
+                <input type="text" class="form-control" formControlName="cnpj" >                        
+            </div>             
+            <div class="col-sm-3 form-group">
+                <label>Tipo</label>
+                <select class="form-control" formControlName="codigoTipo">              
+                    <option *ngFor="let tipo of tiposFundo" value="{{tipo.codigo}}">{{tipo.codigo}} | {{tipo.nome}}</option> 
+                 </select>             
+            </div>          
+        </div>
+        <div class="row content">
+            <div class="col-sm-1 form-group">
+                <button type="submit" [disabled]="loading" class="btn btn-secondary" (click)="cancel()">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Cancelar
+                </button>
+            </div>              
+            <div class="col-sm-1 form-group">
+                <button type="submit" [disabled]="loading" class="btn btn-success" (click)="edit()">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div> 
+
+    <div class="form-group" *ngIf="movPatMode">
+        <div class="row content">
+            <div class="col-sm-3 form-group">
+                <label >Código</label>
+                <input type="text" class="form-control" formControlName="codigo" readonly>                        
+            </div>
+            <div class="col-sm-3 form-group"> 
+                <label >Movimentar Patrimonio</label>
+                <input type="number" class="form-control" formControlName="patrimonio" >                       
+            </div>     
+        </div>
+        <div class="row content">
+            <div class="col-sm-1 form-group">
+                <button type="submit" [disabled]="loading" class="btn btn-secondary" (click)="cancel()">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Cancelar
+                </button>
+            </div>              
+            <div class="col-sm-1 form-group">
+                <button type="submit" [disabled]="loading" class="btn btn-success" (click)="movPat()">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </div> 
+
+    <div class="form-group">
+        <table class="table table-striped">
+            <thead >
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>CNPJ</th>
+                <th>Tipo</th>
+                <th>Patrimonio</th>
+                <th></th>
+                <th></th>            
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of myFundoList" >
+                <td data-title="Codigo">{{ item.codigo }}</td>
+                <td data-title="Nome">{{ item.nome }}</td>
+                <td data-title="Cnpj">{{ item.cnpj }}</td>
+                <td data-title="Tipo">{{ item.codigoTipo }} - {{ item.nomeTipo }}</td>
+                <td data-title="Patrimonio">
+                 <button type="button" class="btn-primary" (click)="movMode(item)" >+ ou -</button>   
+                 {{ item.patrimonio }} 
+                </td>
+                <td>
+                    <button type="button" class="btn btn-warning" (click)="editMode(item)" >Editar</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" (click)="remove(item.codigo)" >Apagar</button>
+                </td>            
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>
